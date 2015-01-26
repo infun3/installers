@@ -1,0 +1,42 @@
+URL=""
+USR="ts3serv"
+PWD=""
+MYUSR=""
+MYDB=""
+MYPWD=""
+MYHST=""
+
+adduser $USR
+su $USR
+cd /home/$USRr/
+wget $URL
+
+tar xzf ${URL##*/} -C /home/$USRr/
+/home/$USRr/ts3server_minimal_runscript.sh createinifile=1
+echo "[config]
+host=127.0.0.1
+port='3306'
+username=$MYUSR
+password=$MYPWD
+database=$MYDB
+socket= " > ts3db_mysql.ini
+echo "machine_id=
+default_voice_port=9987
+voice_ip=0.0.0.0
+liscensepath=
+filetransfer_port=30033
+filetransfer_ip=0.0.0.0
+query_port=10011
+query_ip=0.0.0.0
+query_ip_whitelist=query_ip_whitelist.txt
+query_ip_blacklist=query_ip_blacklist.txt
+dbplugin=ts3db_mysql
+dbpluginparameter=ts3db_mysql.ini
+dbsqlpath=sql/
+dbsqlcreatepath=create_mysql/
+dblogkeepdays=90
+logpath=logs
+logquerycommands=0" > /home/$USRr/ts3server.ini
+
+/~/serv/ts3server_minimal_runscript.sh start inifile=ts3server.ini 
+crontab -u $USR -e
